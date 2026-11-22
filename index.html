@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltix Tech Store</title>
+<style>
+:root{--bg:#f5f6fa;--card:#fff;--text:#161a23;--muted:#6b7280;--accent:#4f46e5;--accent2:#7c3aed;--border:#e5e7eb;--err:#dc2626;--star:#f59e0b}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1015;--card:#171a22;--text:#eceef3;--muted:#9aa1ae;--accent:#818cf8;--accent2:#a78bfa;--border:#272b36}}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.nav{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--border)}
+.nav-in{display:flex;align-items:center;gap:16px;height:64px}
+.brand{font-weight:800;font-size:1.25rem;color:var(--accent);white-space:nowrap}
+#q{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-size:.95rem}
+.cartbtn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-size:.95rem;cursor:pointer;white-space:nowrap}
+#badge{background:#fff;color:var(--accent);border-radius:99px;padding:1px 8px;font-weight:700;margin-left:6px;font-size:.8rem}
+.hero{background:linear-gradient(120deg,var(--accent),var(--accent2));color:#fff;padding:56px 0}
+.hero h1{margin:0 0 10px;font-size:clamp(1.8rem,4vw,2.8rem)}
+.hero p{margin:0 0 22px;opacity:.92;max-width:520px;font-size:1.05rem}
+.hero a{display:inline-block;background:#fff;color:var(--accent);padding:11px 22px;border-radius:10px;font-weight:700;text-decoration:none}
+.perks{display:flex;gap:24px;flex-wrap:wrap;padding:18px 0;color:var(--muted);font-size:.9rem}
+#chips{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 16px}
+.chip{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:99px;padding:7px 16px;cursor:pointer;font-size:.9rem}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;color:var(--muted);font-size:.9rem}
+#sort{padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;padding-bottom:40px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.12)}
+.pic{height:130px;display:flex;align-items:center;justify-content:center;font-size:3.4rem;cursor:pointer}
+.info{padding:14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.tag{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
+.info h3{margin:0;font-size:1rem;cursor:pointer}
+.stars{color:var(--star);font-size:.85rem}.stars small{color:var(--muted)}
+.price{font-size:1.15rem;font-weight:700;margin-top:4px}
+.stock{font-size:.8rem;color:var(--muted)}.low{color:var(--err)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-size:.92rem;width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);margin-top:8px}
+.info .btn{margin-top:auto}
+footer{background:var(--card);border-top:1px solid var(--border);padding:26px 0;color:var(--muted);text-align:center;font-size:.9rem}
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:.2s;z-index:30}
+#overlay.show{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:var(--card);z-index:40;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column}
+#drawer.show{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--border)}
+.dh h2{margin:0;font-size:1.15rem}
+.x{background:none;border:0;font-size:1.6rem;color:var(--text);cursor:pointer;line-height:1}
+#dbody{flex:1;overflow:auto;padding:8px 18px}
+#dfoot{padding:16px 18px;border-top:1px solid var(--border)}
+.line{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+.line .ic{font-size:1.8rem}
+.line .nm{flex:1;font-size:.92rem}
+.line .nm small{display:block;color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer}
+.del{color:var(--err);font-size:.78rem;background:none;border:0;cursor:pointer;padding:2px 0}
+.row{display:flex;justify-content:space-between;margin-bottom:12px}
+.muted{color:var(--muted)}.pad{padding:30px 0;text-align:center}
+.field{display:block;margin:14px 0 0;font-size:.85rem;color:var(--muted)}
+.field input,.field textarea{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
+.done{text-align:center;padding:40px 0}.done .big{font-size:3.5rem}
+#modal{position:fixed;inset:0;z-index:45;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.5)}
+#modal.show{display:flex}
+.mbox{background:var(--card);border-radius:16px;max-width:520px;width:100%;overflow:hidden;position:relative}
+.mbox .pic{height:190px;font-size:5rem;cursor:default}
+.mbody{padding:20px;display:flex;flex-direction:column;gap:8px}
+.mbody h2{margin:0}
+.mx{position:absolute;top:10px;right:14px;color:#222}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(90px);background:var(--text);color:var(--bg);padding:11px 20px;border-radius:10px;z-index:60;transition:.25s;font-size:.92rem}
+#toast.show{transform:translateX(-50%)}
+@media(max-width:560px){.perks{display:none}.hero{padding:36px 0}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+  <span class="brand">⚡ Voltix</span>
+  <input id="q" type="search" placeholder="Search for products...">
+  <button class="cartbtn" data-act="opencart">🛒 Cart <span id="badge">0</span></button>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <h1>Smart tech for every desk and pocket</h1>
+  <p>Headphones, keyboards, storage, chargers and smart-home gear at friendly prices.</p>
+  <a href="#shop">Shop now</a>
+</div></section>
+
+<div class="wrap">
+  <div class="perks"><span>🚚 Fast delivery</span><span>🔒 Secure checkout</span><span>↩️ Easy returns</span><span>🛠️ 1-year warranty</span></div>
+  <main id="shop">
+    <div id="chips"></div>
+    <div class="bar"><span id="countTxt"></span>
+      <select id="sort">
+        <option value="featured">Featured</option>
+        <option value="low">Price: low to high</option>
+        <option value="high">Price: high to low</option>
+        <option value="rating">Top rated</option>
+        <option value="name">Name A-Z</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"><p class="muted">Loading products...</p></div>
+  </main>
+</div>
+<footer>© 2026 Voltix Tech Store · Built and deployed with Jenkins</footer>
+
+<div id="overlay" data-act="close"></div>
+<aside id="drawer">
+  <div class="dh"><h2 id="dtitle">Your cart</h2><button class="x" data-act="close">×</button></div>
+  <div id="dbody"></div>
+  <div id="dfoot"></div>
+</aside>
+<div id="modal"><div class="mbox" id="mbox"></div></div>
+<div id="toast"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const money = (n) => 'Rs ' + Number(n).toLocaleString('en-US');
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const HUES = { Accessories: 220, Audio: 280, Peripherals: 170, Storage: 30, Mobile: 340, 'Smart Home': 140 };
+const stars = (r) => '★'.repeat(Math.round(r)) + '☆'.repeat(5 - Math.round(r));
+
+let products = [], cart = {}, cat = 'All', view = 'cart', lastOrder = null, toastTimer;
+
+try { cart = JSON.parse(localStorage.getItem('voltix-cart') || '{}'); } catch (e) { cart = {}; }
+const saveCart = () => { try { localStorage.setItem('voltix-cart', JSON.stringify(cart)); } catch (e) {} };
+const byId = (id) => products.find((p) => p.id === Number(id));
+
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+async function loadProducts() {
+  try {
+    const res = await fetch('/api/products');
+    if (!res.ok) throw new Error('bad status');
+    products = await res.json();
+  } catch (e) {
+    $('grid').innerHTML = '<p class="muted">Could not load products. Is the server running?</p>';
+    return;
+  }
+  Object.keys(cart).forEach((id) => {
+    const p = byId(id);
+    if (!p || p.stock < 1) delete cart[id];
+    else if (cart[id] > p.stock) cart[id] = p.stock;
+  });
+  saveCart();
+  const cats = ['All', ...new Set(products.map((p) => p.category))];
+  $('chips').innerHTML = cats.map((c) => `<button class="chip ${c === cat ? 'on' : ''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+  renderGrid(); renderCart();
+}
+
+function tile(p, cls) {
+  const h = HUES[p.category] || 200;
+  return `<div class="pic ${cls || ''}" ${cls ? '' : `data-act="open" data-id="${p.id}"`} style="background:linear-gradient(135deg,hsl(${h} 80% 90%),hsl(${h} 70% 78%))">${p.icon || '📦'}</div>`;
+}
+
+function renderGrid() {
+  const q = $('q').value.trim().toLowerCase(), s = $('sort').value;
+  const list = products.filter((p) => (cat === 'All' || p.category === cat) && p.name.toLowerCase().includes(q));
+  if (s === 'low') list.sort((a, b) => a.price - b.price);
+  if (s === 'high') list.sort((a, b) => b.price - a.price);
+  if (s === 'rating') list.sort((a, b) => b.rating - a.rating);
+  if (s === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+  $('countTxt').textContent = list.length + ' product' + (list.length === 1 ? '' : 's');
+  $('grid').innerHTML = list.length ? list.map((p) => `<div class="card">${tile(p)}
+    <div class="info"><span class="tag">${esc(p.category)}</span>
+    <h3 data-act="open" data-id="${p.id}">${esc(p.name)}</h3>
+    <div class="stars">${stars(p.rating)} <small>${p.rating}</small></div>
+    <div class="price">${money(p.price)}</div>
+    <div class="stock ${p.stock < 15 ? 'low' : ''}">${p.stock < 1 ? 'Out of stock' : (p.stock < 15 ? 'Only ' + p.stock + ' left' : 'In stock')}</div>
+    <button class="btn" data-act="add" data-id="${p.id}" ${p.stock < 1 ? 'disabled' : ''}>Add to cart</button></div></div>`).join('')
+    : '<p class="muted">No products found.</p>';
+}
+
+function openProduct(id) {
+  const p = byId(id); if (!p) return;
+  $('mbox').innerHTML = `${tile(p, 'x')}<button class="x mx" data-act="closemodal">×</button>
+    <div class="mbody"><span class="tag">${esc(p.category)}</span><h2>${esc(p.name)}</h2>
+    <div class="stars">${stars(p.rating)} <small>${p.rating} / 5</small></div>
+    <p class="muted">${esc(p.desc || '')}</p>
+    <div class="price">${money(p.price)}</div>
+    <button class="btn" data-act="add" data-id="${p.id}" ${p.stock < 1 ? 'disabled' : ''}>Add to cart</button></div>`;
+  $('modal').classList.add('show');
+}
+
+function cartLines() { return Object.keys(cart).map((id) => ({ p: byId(id), qty: cart[id] })).filter((l) => l.p); }
+
+function renderCart() {
+  const lines = cartLines();
+  const count = lines.reduce((n, l) => n + l.qty, 0);
+  const total = lines.reduce((n, l) => n + l.p.price * l.qty, 0);
+  $('badge').textContent = count;
+  const body = $('dbody'), foot = $('dfoot');
+  $('dtitle').textContent = view === 'form' ? 'Checkout' : 'Your cart';
+  if (view === 'done') {
+    body.innerHTML = `<div class="done"><div class="big">🎉</div><h3>Order placed!</h3>
+      <p>Order #${lastOrder.id} · ${money(lastOrder.total)}</p>
+      <p class="muted">Thank you, ${esc(lastOrder.customer.name)}. We will deliver to ${esc(lastOrder.customer.address)}. Payment: cash on delivery.</p></div>`;
+    foot.innerHTML = '<button class="btn" data-act="close">Continue shopping</button>'; return;
+  }
+  if (!lines.length) { view = 'cart'; body.innerHTML = '<p class="muted pad">Your cart is empty.</p>'; foot.innerHTML = ''; return; }
+  if (view === 'form') {
+    if (!$('fname')) body.innerHTML = `<label class="field">Full name<input id="fname" autocomplete="name"></label>
+      <label class="field">Delivery address<textarea id="faddr" rows="3" autocomplete="street-address"></textarea></label>
+      <p class="muted">Payment: cash on delivery</p>`;
+    foot.innerHTML = `<div class="row"><b>Total</b><b>${money(total)}</b></div>
+      <button class="btn" data-act="place">Place order</button><button class="btn ghost" data-act="back">Back to cart</button>`;
+    return;
+  }
+  body.innerHTML = lines.map((l) => `<div class="line"><span class="ic">${l.p.icon || '📦'}</span>
+    <div class="nm">${esc(l.p.name)}<small>${money(l.p.price)}</small><button class="del" data-act="del" data-id="${l.p.id}">Remove</button></div>
+    <div class="qty"><button data-act="dec" data-id="${l.p.id}">−</button><span>${l.qty}</span><button data-act="inc" data-id="${l.p.id}">+</button></div></div>`).join('');
+  foot.innerHTML = `<div class="row"><b>Total</b><b>${money(total)}</b></div><button class="btn" data-act="checkout">Checkout</button>`;
+}
+
+function setQty(id, qty) {
+  const p = byId(id); if (!p) return;
+  if (qty <= 0) delete cart[id];
+  else if (qty > p.stock) return toast('No more stock available');
+  else cart[id] = qty;
+  saveCart(); renderCart();
+}
+
+function openDrawer(v) { view = v || 'cart'; renderCart(); $('drawer').classList.add('show'); $('overlay').classList.add('show'); }
+function closeDrawer() { $('drawer').classList.remove('show'); $('overlay').classList.remove('show'); if (view !== 'cart') { view = 'cart'; renderCart(); } }
+
+async function placeOrder() {
+  const name = $('fname').value.trim(), address = $('faddr').value.trim();
+  if (!name || !address) return toast('Please enter your name and address');
+  const items = cartLines().map((l) => ({ id: l.p.id, qty: l.qty }));
+  let res, data;
+  try {
+    res = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ customer: { name, address }, items }) });
+    data = await res.json();
+  } catch (e) { return toast('Could not reach the server'); }
+  if (!res.ok) { toast(data.error || 'Checkout failed'); return loadProducts(); }
+  lastOrder = data; cart = {}; saveCart(); view = 'done';
+  await loadProducts(); renderCart();
+}
+
+document.addEventListener('click', (e) => {
+  const chip = e.target.closest('[data-cat]');
+  if (chip) { cat = chip.dataset.cat; document.querySelectorAll('.chip').forEach((c) => c.classList.toggle('on', c === chip)); return renderGrid(); }
+  if (e.target.id === 'modal') return $('modal').classList.remove('show');
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const id = b.dataset.id;
+  switch (b.dataset.act) {
+    case 'add': { const p = byId(id); if (!p) break;
+      if ((cart[id] || 0) + 1 > p.stock) { toast('No more stock available'); break; }
+      cart[id] = (cart[id] || 0) + 1; saveCart(); renderCart(); toast('Added to cart ✓'); break; }
+    case 'open': openProduct(id); break;
+    case 'closemodal': $('modal').classList.remove('show'); break;
+    case 'opencart': openDrawer('cart'); break;
+    case 'inc': setQty(id, (cart[id] || 0) + 1); break;
+    case 'dec': setQty(id, (cart[id] || 0) - 1); break;
+    case 'del': setQty(id, 0); break;
+    case 'checkout': view = 'form'; $('dbody').innerHTML = ''; renderCart(); break;
+    case 'back': view = 'cart'; renderCart(); break;
+    case 'place': placeOrder(); break;
+    case 'close': closeDrawer(); break;
+  }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { $('modal').classList.remove('show'); closeDrawer(); } });
+$('q').oninput = renderGrid;
+$('sort').onchange = renderGrid;
+loadProducts();
+</script>
+</body>
+</html>

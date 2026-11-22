@@ -1,0 +1,11 @@
+{
+  "name": "voltix-store",
+  "version": "2.0.0",
+  "description": "E-commerce store (zero dependencies) with a Jenkins pipeline",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test store.test.js"
+  },
+  "engines": { "node": ">=18" }
+}

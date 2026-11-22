@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "customer": {
+      "name": "mmmm",
+      "address": ",,,,,"
+    },
+    "items": [
+      {
+        "id": 3,
+        "name": "USB-C Hub",
+        "price": 3499,
+        "qty": 1
+      }
+    ],
+    "total": 3499,
+    "createdAt": "2026-11-22T18:09:03.296Z"
+  }
+]
