@@ -46,13 +46,15 @@ test('unknown product returns 404', async () => {
 });
 
 test('placing an order totals correctly and reduces stock', async () => {
-  const before = (await (await fetch(base + '/api/products/1')).json()).stock;
+  // Read live prices so the test keeps working when you change a price in products.js
+  const mouse = await (await fetch(base + '/api/products/1')).json();
+  const stand = await (await fetch(base + '/api/products/4')).json();
   const res = await post('/api/orders', { customer, items: [{ id: 1, qty: 2 }, { id: 4, qty: 1 }] });
   assert.equal(res.status, 201);
   const order = await res.json();
-  assert.equal(order.total, 1999 * 2 + 2799);
+  assert.equal(order.total, mouse.price * 2 + stand.price);
   const after = (await (await fetch(base + '/api/products/1')).json()).stock;
-  assert.equal(after, before - 2);
+  assert.equal(after, mouse.stock - 2);
 });
 
 test('rejects an empty cart', async () => {
