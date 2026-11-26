@@ -1,6 +1,6 @@
 // Edit this file to add, remove or change products. Keep each id unique. Prices are in Rs.
 module.exports = [
-  { id: 1,  category: 'Accessories', icon: '🖱️', name: 'Wireless Mouse',        price: 2999,  stock: 50,  rating: 4.4, desc: 'Quiet clicks, 18-month battery life and a tiny USB receiver.' },
+  { id: 1,  category: 'Accessories', icon: '🖱️', name: 'Wireless Mouse',        price: 1999,  stock: 50,  rating: 4.4, desc: 'Quiet clicks, 18-month battery life and a tiny USB receiver.' },
   { id: 2,  category: 'Peripherals', icon: '⌨️', name: 'Mechanical Keyboard',   price: 7499,  stock: 20,  rating: 4.7, desc: 'Hot-swappable switches, RGB backlight and a full metal frame.' },
   { id: 3,  category: 'Accessories', icon: '🔌', name: 'USB-C Hub',             price: 3499,  stock: 35,  rating: 4.3, desc: '7-in-1 hub with HDMI, SD reader and 100W pass-through charging.' },
   { id: 4,  category: 'Accessories', icon: '💻', name: 'Laptop Stand',          price: 2799,  stock: 40,  rating: 4.5, desc: 'Foldable aluminium stand with six height settings.' },
